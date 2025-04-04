@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla Dinámica</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        .buttons {
+            margin-bottom: 20px;
+        }
+        .buttons button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+        }
+        .buttons button.active {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <div class="buttons">
+        <button onclick="changeView('bimestre')" id="btn-bimestre" class="active">Bimestre</button>
+        <button onclick="changeView('ano')" id="btn-ano">Año</button>
+        <button onclick="changeView('historico')" id="btn-historico">Histórico</button>
+    </div>
+    <table id="data-table">
+        <thead>
+            <tr id="table-head"></tr>
+        </thead>
+        <tbody>
+            <tr id="table-body"></tr>
+        </tbody>
+    </table>
+    
+    <script>
+        const historicalColumns = ["MR-12", "MR-11", "MR-10", "MR-9", "MR-8", "MR-7", "MR-6", "MR-5", "MR-4", "MR-3", "MR-2", "MR-1"];
+        const periodColumns = ["Conta", "Bimestre", "Total (últimos 12 meses)"];
+        
+        function changeView(view) {
+            const columns = view === "historico" ? historicalColumns : periodColumns;
+            
+            document.getElementById("table-head").innerHTML = columns.map(col => `<th>${col}</th>`).join('');
+            document.getElementById("table-body").innerHTML = columns.map(() => `<td>-</td>`).join('');
+            
+            document.querySelectorAll('.buttons button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${view}`).classList.add('active');
+        }
+        
+        changeView('bimestre');
+    </script>
+</body>
+</html>
