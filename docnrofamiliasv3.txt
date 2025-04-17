@@ -1,0 +1,60 @@
+1. Se definen los datos en una función PHP como un arreglo de tres categorías:
+bolsa_familia, ingresos_bajos y ingresos_mayores.
+Cada categoría tiene datos separados por año (2022, 2023, 2024) y por mes (Jan a Dez).
+
+
+2. const datosPorGrafico = <?php echo json_encode($data); ?>;
+Se pasa todo el arreglo PHP ($data) a JavaScript usando json_encode.
+Ahora en JS tenemos acceso a datosPorGrafico.bolsa_familia, etc.
+
+
+3. function construirDataset(datos, anio, label, color) { ... }
+Esta función toma:
+datos → un objeto con años y meses.
+anio → el año seleccionado.
+label → título del gráfico.
+color → colores del gráfico.
+Y devuelve un objeto que Chart.js puede usar para renderizar el gráfico.
+
+
+4. const config = [
+  { id: 'bolsa', titulo: '...', dataKey: 'bolsa_familia', colores: [...] },
+  ...
+];
+Se definen los tres gráficos de forma compacta en un arreglo.
+Cada gráfico tiene:
+Un id, un titulo, un dataKey (para acceder a sus datos) y colores para personalizar el gráfico.
+
+
+5. config.forEach(cfg => {
+  const seccion = document.createElement('section');
+  ...
+  charts[cfg.id] = new Chart(ctx, {
+    type: 'bar',
+    data: construirDataset(...),
+    ...
+  });
+});
+
+Se recorre el arreglo config.
+Para cada uno:
+
+Se crea una <section> con su título.
+Se crea un <canvas> para renderizar el gráfico.
+Se usa Chart.js para crear el gráfico con los datos iniciales del año 2023.
+
+
+6. selectorGlobal.addEventListener('change', () => {
+  const anio = selectorGlobal.value;
+  config.forEach(cfg => {
+    const chart = charts[cfg.id];
+    chart.data = construirDataset(...);
+    chart.update();
+  });
+});
+
+Cuando se cambia el <select> de año:
+
+Se obtiene el nuevo año seleccionado.
+Se actualiza cada gráfico con los datos correspondientes a ese año.
+Se llama a chart.update() para que Chart.js actualice la vista.
